@@ -1,0 +1,5 @@
+2026-09-28 14:10:00 [INFO] [auth-service] Session token validator active on port 8002.
+2026-09-28 14:11:20 [INFO] [auth-service] Token rotation successful for user_98124
+2026-09-28 14:12:05 [WARN] [auth-service] Redis memory threshold crossed 85% on node cluster-redis-01
+2026-09-28 14:12:45 [ERROR] [auth-service] RedisCommandExecutionException: OOM command not allowed when used memory > 'maxmemory' (Token blacklist full)
+2026-09-28 14:13:10 [ERROR] [auth-service] JWT verification failed: Cannot query revocation store. Returning 500 Internal Server Error to clients.

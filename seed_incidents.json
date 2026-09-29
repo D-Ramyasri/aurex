@@ -1,0 +1,82 @@
+[
+  {
+    "service": "payment-gateway",
+    "title": "Upstream fraud engine timeout",
+    "symptom": "Upstream fraud engine timed out after 1.0s latency spike, HTTP 504 Gateway Timeout returned on payment authorization",
+    "root_cause": "Upstream acquirer fraud verification network latency exceeded client synchronous SLA timeout window (1.0s)",
+    "fix": "Configured circuit breaker on acquirer fraud client, enabled bounded retry with exponential backoff (max 3 attempts), and increased client timeout window from 1.0s to 3.0s",
+    "resolution_time_minutes": 35
+  },
+  {
+    "service": "payment-gateway",
+    "title": "Database connection pool exhaustion",
+    "symptom": "Database connection pool exhausted, ConnectionPoolTimeoutError, HTTP 503 Service Unavailable returned",
+    "root_cause": "Connection pool reached maximum concurrent capacity (5/5) with worker threads blocked waiting for connection acquisition",
+    "fix": "Increased DatabasePool max_connections from 5 to 15, ensured try-finally connection release in all query handlers, and added wait queue monitoring alerts",
+    "resolution_time_minutes": 25
+  },
+  {
+    "service": "payment-gateway",
+    "title": "Duplicate webhook delivery",
+    "symptom": "Duplicate webhook delivery detected for event_id, UNIQUE constraint failed on webhook_events database table",
+    "root_cause": "Merchant payment webhook dispatcher retried unacknowledged events without idempotency handling in receiver",
+    "fix": "Added idempotent duplicate detection returning HTTP 200 OK immediately for previously processed event_ids without re-executing business logic",
+    "resolution_time_minutes": 15
+  },
+  {
+    "service": "payment-gateway",
+    "title": "Webhook signature verification failure",
+    "symptom": "Webhook signature verification failed with HMAC mismatch, HTTP 401 Unauthorized on incoming payment notifications",
+    "root_cause": "Webhook signing secret mismatch or mutated payload raw bytes prior to HMAC-SHA256 signature comparison",
+    "fix": "Synchronized webhook secret key in secret manager and preserved raw request body bytes for signature verification",
+    "resolution_time_minutes": 20
+  },
+  {
+    "service": "payment-gateway",
+    "title": "Upstream dependency HTTP 504",
+    "symptom": "Upstream dependency HTTP 504 Gateway Timeout during payment settlement transaction processing",
+    "root_cause": "External banking acquirer gateway gateway timeout under heavy batch settlement processing",
+    "fix": "Implemented asynchronous decoupled settlement queue with dead-letter queue (DLQ) retry mechanism instead of synchronous HTTP blocking",
+    "resolution_time_minutes": 40
+  },
+  {
+    "service": "payment-gateway",
+    "title": "Slow database / database timeout",
+    "symptom": "Slow database queries and database query timeout after 5000ms on payments transaction ledger",
+    "root_cause": "Missing composite index on (account_id, created_at) causing sequential table scan during transaction history queries",
+    "fix": "Added composite B-tree index on payments ledger table and tuned query statement timeout threshold to 2000ms",
+    "resolution_time_minutes": 30
+  },
+  {
+    "service": "payment-gateway",
+    "title": "Webhook worker failure",
+    "symptom": "Background WebhookWorker failure and thread crash with sqlite3.OperationalError database is locked",
+    "root_cause": "Concurrent writes between main API thread and background worker thread caused SQLite database lock contention",
+    "fix": "Configured SQLite WAL (Write-Ahead Logging) mode and increased busy_timeout to 5000ms to allow concurrent reads and serialized writes",
+    "resolution_time_minutes": 20
+  },
+  {
+    "service": "payment-gateway",
+    "title": "Service dependency degradation",
+    "symptom": "Service dependency degradation with acquirer latency increasing by 400ms across payment authorizations",
+    "root_cause": "Regional DNS latency degradation and unoptimized TLS handshake negotiation on upstream partner endpoints",
+    "fix": "Enabled HTTP/2 persistent connection keep-alive pooling and pre-warmed DNS resolver cache",
+    "resolution_time_minutes": 35
+  },
+  {
+    "service": "payment-gateway",
+    "title": "Payment processing failure caused by external dependency",
+    "symptom": "Payment processing failure caused by external dependency returning HTTP 503 Service Unavailable",
+    "root_cause": "Downstream card network gateway maintenance window not communicated in automated health status",
+    "fix": "Implemented dynamic multi-acquirer failover routing to instantly reroute transactions to backup payment processor",
+    "resolution_time_minutes": 45
+  },
+  {
+    "service": "payment-gateway",
+    "title": "Circuit-breaker/recovery incident",
+    "symptom": "Circuit-breaker tripped open after consecutive upstream timeouts, rejecting outbound requests",
+    "root_cause": "Circuit breaker threshold was overly sensitive (failure_threshold=3) causing premature trips during brief network blips",
+    "fix": "Adjusted circuit breaker failure threshold to 5 consecutive errors over 30s window and configured half-open probe recovery interval",
+    "resolution_time_minutes": 25
+  }
+]

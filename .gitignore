@@ -1,0 +1,8 @@
+.env
+data/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+test_application/data/*.db*
+applications_store.json
+.venv/

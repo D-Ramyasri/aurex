@@ -1,0 +1,4 @@
+2026-09-28 14:00:00 [INFO] [order-service] Order API initialized on port 9002.
+2026-09-28 14:01:10 [INFO] [order-service] Order dispatch queue healthy (0 backlog).
+2026-09-28 14:02:15 [INFO] [order-service] Health check ping 200 OK (latency 12ms).
+2026-09-28 14:03:40 [INFO] [order-service] Processed order #ord-99214 successfully.

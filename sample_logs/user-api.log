@@ -1,0 +1,3 @@
+2026-09-28 14:00:00 [INFO] [user-profile] User profile API active on port 9003.
+2026-09-28 14:02:10 [INFO] [user-profile] User profile cache hit ratio 94.2%.
+2026-09-28 14:04:15 [WARN] [user-profile] Profile image S3 latency spiked to 980ms.

@@ -1,0 +1,5 @@
+2026-09-28 14:00:00 [INFO] [inventory-service] Inventory API started on port 8003.
+2026-09-28 14:01:10 [INFO] [inventory-service] SKU item lookup cache warm.
+2026-09-28 14:02:15 [WARN] [inventory-service] High transaction lock contention detected on SKU table
+2026-09-28 14:03:00 [ERROR] [inventory-service] PostgresError: deadlock detected - Process 4812 waits for ExclusiveLock on relation 16402; blocked by process 4819.
+2026-09-28 14:03:22 [ERROR] [inventory-service] Checkout reservation failed for cart_7721 due to unhandled transaction rollback.
